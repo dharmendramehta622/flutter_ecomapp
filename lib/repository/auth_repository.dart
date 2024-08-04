@@ -3,6 +3,7 @@ import 'package:new_project/Networks/NetworkApiServices.dart';
 import 'package:new_project/resources/app_url.dart';
 
 class AuthRepository {
+  
   final BaseApiServices _apiServices = NetworkApiServices();
 
   Future<dynamic> loginApi(dynamic data) async {
@@ -18,4 +19,5 @@ class AuthRepository {
 
     return response;
   }
+  
 }
