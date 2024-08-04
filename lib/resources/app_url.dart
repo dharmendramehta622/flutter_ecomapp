@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
 
 class AppUrl {
   static var baseUrl = 'https://api.hamrokk.com';
   static var loginUrl = '$baseUrl/user/login/';
   static var registerUrl = '$baseUrl/user/register/';
 }
+
 
 class ApiConstant{
     static const httpBase = 'https://';
@@ -17,3 +19,5 @@ class ApiConstant{
     dio.Headers.contentTypeHeader: dio.Headers.jsonContentType,
   });
 }
+
+

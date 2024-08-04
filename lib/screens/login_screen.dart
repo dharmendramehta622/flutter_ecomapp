@@ -1,17 +1,17 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:new_project/Networks/models/login_model.dart';
 import 'package:new_project/blocs/login_bloc/login_event.dart';
+import 'package:new_project/resources/routes.dart';
 import 'package:new_project/screens/first_time_login.dart';
-import 'package:new_project/screens/home_screen.dart';
-import 'package:new_project/screens/signup_screen.dart';
 
 import '../blocs/login_bloc/login_bloc.dart';
 import '../blocs/login_bloc/login_state.dart';
+import '../resources/constants.dart';
+import '../resources/ui_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,8 +21,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   FocusNode emailFocusnode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
@@ -43,9 +43,13 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
-        // TODO: implement listener
+        if (state is LoginFailedState) {
+          showErrorMessage(state.message);
+        }
       },
       builder: (context, state) {
+        final bloc = context.read<LoginBloc>();
+
         return Scaffold(
           backgroundColor: Color.fromRGBO(249, 250, 251, 1),
           body: SingleChildScrollView(
@@ -97,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 30,
                       ),
                       Text(
-                        'Username',
+                        'Email',
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
@@ -119,14 +123,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               )
                             ]),
                         child: TextFormField(
-                          controller: _emailController,
+                          controller: bloc.emailController,
                           keyboardType: TextInputType.emailAddress,
                           focusNode: emailFocusnode,
                           decoration: InputDecoration(
                             constraints: BoxConstraints(
                               maxHeight: 55,
                             ),
-                            hintText: 'Enter Your Username',
+                            hintText: 'Enter your email',
                             hintStyle: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 16,
@@ -145,11 +149,20 @@ class _LoginScreenState extends State<LoginScreen> {
                             FocusScope.of(context)
                                 .requestFocus(passwordFocusNode);
                           },
+                          onChanged: (value) => bloc.add(
+                              LoginTextFieldChangedEvent(
+                                  bloc.emailController.text,
+                                  bloc.passwordController.text)),
                         ),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
+                      (state is LoginEmailErrorState)
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: RegularText(state.message, 15, kRed600),
+                            )
+                          : SizedBox(),
+                      SizedBox(height: 20),
                       Text(
                         'Password',
                         style: TextStyle(
@@ -173,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               )
                             ]),
                         child: TextFormField(
-                          controller: _passwordController,
+                          controller: bloc.passwordController,
                           focusNode: passwordFocusNode,
                           obscureText: true,
                           obscuringCharacter: '•',
@@ -190,11 +203,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                   borderSide: BorderSide(
                                       color:
                                           Color.fromRGBO(208, 213, 221, 1)))),
+                          onChanged: (value) => bloc.add(
+                              LoginTextFieldChangedEvent(
+                                  bloc.emailController.text,
+                                  bloc.passwordController.text)),
                         ),
                       ),
                     ],
                   ),
                 ),
+                (state is LoginPasswordErrorState)
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                        child: RegularText(state.message, 15, kRed600),
+                      )
+                    : SizedBox(),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -253,8 +276,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: InkWell(
                     onTap: () {
                       context.read<LoginBloc>().add(LoginStartedEvent(
-                          LoginModel(_emailController.text.trim(),
-                              _passwordController.text.trim(), check))); 
+                          LoginModel(bloc.emailController.text,
+                              bloc.passwordController.text, check)));
                     },
                     child: Container(
                       height: 55,
@@ -292,10 +315,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(width: 4),
                       InkWell(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignUpScreen()));
+                          context.go(Routes.register);
                         },
                         child: Text(
                           'Sign Up',

@@ -29,9 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   left: 0,
                   right: 0,
                   child: Image.asset(
-                    'assets/images/circle.png',
-                    // height: 478,
-                    // width: 689,
+                    'assets/images/circle.png', 
                   ),
                 ),
                 Positioned(

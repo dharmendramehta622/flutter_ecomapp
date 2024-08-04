@@ -1,4 +1,3 @@
- 
 import 'package:bloc/bloc.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
@@ -20,27 +19,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   LoginBloc() : super(LoginInitial()) {
-
     on<LoginStartedEvent>((event, emit) async {
       emit(LoginLoading());
       final ApiResponse response =
           await _authService.loginWithEmail(event.model);
-      final message = response.msg?.data['login']['message'];
+      message = 'Logged in successfully.';
       if (response.status) {
         _clear();
         add(ClientLoginSuccessEvent(message));
       } else {
+        final message = response.msg?.data['data'];
         emit(LoginFailedState(message));
       }
     });
-    
+
     on<ClientLoginSuccessEvent>((event, emit) async {
       emit(ClientLoginSucessState(event.message));
     });
     on<AdminLoginSuccessEvent>((event, emit) async {
       emit(AdminLoginSucessState(event.message, event.sessionInfo));
     });
-    
+
     on<LoginFailedEvent>((event, emit) {
       emit(LoginFailedState(event.message));
     });
@@ -58,8 +57,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else {
         emit(LoginFormValid());
       }
-    }); 
-    
+    });
+
     on<LogoutRequested>((event, emit) async {
       await LocalStorageService.instance
           .delete(LocalStorageServiceItems.userToken);
