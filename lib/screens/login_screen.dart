@@ -43,6 +43,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
+        if (state is ClientLoginSucessState) {
+          context.replace(Routes.landing);
+        }
         if (state is LoginFailedState) {
           showErrorMessage(state.message);
         }
@@ -237,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Center(
                           child: Text(
-                            'Remember for 30 days',
+                            'Remember Me',
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,
