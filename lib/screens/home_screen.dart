@@ -12,6 +12,8 @@ import 'package:new_project/blocs/login_bloc/login_event.dart';
 import 'package:new_project/resources/constants.dart';
 import 'package:new_project/resources/routes.dart';
 import 'package:new_project/resources/utils.dart';
+import 'package:new_project/utils/app_colors.dart';
+import 'package:new_project/widgets/custom_button.dart';
 
 import '../blocs/clockin_bloc/clockin_bloc.dart';
 import '../blocs/location_bloc/location_bloc.dart';
@@ -72,18 +74,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CancelButton(
-                      title: 'Cancel',
+                    CustomButtons(
+                      height: 44,
+                      width: 182,
                       onTap: () => Navigator.of(context).pop(),
+                      borderRadius: 8,
+                      textColor: AppColors.textColor,
+                      buttonColor: AppColors.greyColor,
+                      buttonText: 'Cancel',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
-                    CustomButton(
-                      title: 'Confirm',
+                    CustomButtons(
+                      height: 44,
+                      width: 182,
                       onTap: () {
                         context
                             .read<ClockinBloc>()
                             .add(CreateClockIn(state.data!));
                         context.pop();
                       },
+                      borderRadius: 8,
+                      textColor: AppColors.whiteColor,
+                      buttonColor: AppColors.purpleColor,
+                      buttonText: 'Confirm',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                   ],
                 ),
@@ -114,18 +130,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CancelButton(
-                      title: 'Cancel',
+                    CustomButtons(
+                      height: 44,
+                      width: 182,
                       onTap: () => Navigator.of(context).pop(),
+                      borderRadius: 8,
+                      textColor: AppColors.textColor,
+                      buttonColor: AppColors.greyColor,
+                      buttonText: 'Cancel',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
-                    CustomButton(
-                      title: 'Confirm',
+                    CustomButtons(
+                      height: 44,
+                      width: 182,
                       onTap: () {
                         context
                             .read<ClockinBloc>()
                             .add(CreateClockOut(state.data!));
                         context.pop();
                       },
+                      borderRadius: 8,
+                      textColor: AppColors.whiteColor,
+                      buttonColor: AppColors.purpleColor,
+                      buttonText: 'Confirm',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                   ],
                 ),
@@ -251,7 +281,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           .read<LoginBloc>()
                                           .add(LogoutRequested());
                                     },
-                                    child: Icon(Icons.logout,color: kWhite),
+                                    child: Icon(Icons.logout, color: kWhite),
                                   ),
                                 ),
                               ],
