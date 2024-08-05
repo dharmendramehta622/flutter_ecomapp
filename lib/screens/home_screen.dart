@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_project/Networks/models/clockin_model.dart';
 import 'package:new_project/resources/constants.dart';
 import 'package:new_project/resources/utils.dart';
@@ -314,13 +315,58 @@ class _HomeScreenState extends State<HomeScreen> {
                                       BlocBuilder<LocationBloc, LocationState>(
                                         builder: (context, state) {
                                           switch (state.status) {
+                                            case ListStatus.initial:
+                                              return const Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+
+                                            case ListStatus.loading:
+                                              return const Center(
+                                                  child:
+                                                      CircularProgressIndicator());
+                                            case ListStatus.loaded:
+                                              return SizedBox(
+                                                width: 410,
+                                                height: 562,
+                                                child: Column(
+                                                  children: [
+                                                    //google map
+                                                    SizedBox(
+                                                      width: 410,
+                                                      height: 300,
+                                                      child: GoogleMap(
+                                                        myLocationEnabled: true,
+                                                        initialCameraPosition:
+                                                            CameraPosition(
+                                                          target: LatLng(
+                                                              state.data!
+                                                                  .latitude,
+                                                              state.data!
+                                                                  .longitude),
+                                                          zoom: 15,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            default:
+                                              throw UnimplementedError(
+                                                  'Not a valid state');
+                                          }
+                                        },
+                                      ),
+                                      SizedBox(height: 20),
+                                      BlocBuilder<LocationBloc, LocationState>(
+                                        builder: (context, state) {
+                                          switch (state.status) {
                                             case ListStatus.loaded:
                                               return GestureDetector(
                                                 onTap: () {
-                                                  context
-                                                      .read<ClockinBloc>()
-                                                      .add(CreateClockIn(
-                                                          state.data!));
+                                                  // context
+                                                  //     .read<ClockinBloc>()
+                                                  //     .add(CreateClockIn(
+                                                  //         state.data!));
                                                 },
                                                 child: Container(
                                                   height: 44,
@@ -523,8 +569,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 358,
                                       height: 58.75,
                                       decoration: BoxDecoration(
-                                        border: Border.all(color: kGreen200)
-                                      ),
+                                          border: Border.all(color: kGreen200)),
                                       child: Row(
                                         children: [
                                           RegularText(
