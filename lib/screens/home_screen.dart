@@ -318,35 +318,40 @@ class _HomeScreenState extends State<HomeScreen> {
                                           SizedBox(
                                             height: 20,
                                           ),
-                                          Container(
-                                            height: 44,
-                                            width: 259,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                color: Color.fromRGBO(
-                                                    18, 183, 106, 1)),
-                                            child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Image.asset(
-                                                    'assets/icons/tabler_line-scan.png'),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  'Check in',
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color.fromRGBO(
-                                                        255, 255, 255, 1),
+                                          InkWell(
+                                            onTap: () {
+                                              
+                                            },
+                                            child: Container(
+                                              height: 44,
+                                              width: 259,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  color: Color.fromRGBO(
+                                                      18, 183, 106, 1)),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                      'assets/icons/tabler_line-scan.png'),
+                                                  SizedBox(
+                                                    width: 10,
                                                   ),
-                                                ),
-                                              ],
+                                                  Text(
+                                                    'Check in',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Color.fromRGBO(
+                                                          255, 255, 255, 1),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                           SizedBox(
