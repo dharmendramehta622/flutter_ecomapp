@@ -39,7 +39,7 @@ class ClockinBloc extends Bloc<ClockinEvent, ClockinListState> {
 
     on<CreateClockOut>((event, emit) async {
       emit(state.copyWith(status: ListStatus.loading));
-      final res = await _services.clockOut();
+      final res = await _services.clockOut(event.model);
       if (res.status) {
         add(LoadClockInList());
       }

@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_project/Networks/models/clockin_model.dart';
+import 'package:new_project/blocs/clockin_status_bloc/clockin_status_bloc.dart';
 import 'package:new_project/resources/constants.dart';
 import 'package:new_project/resources/utils.dart';
 
@@ -20,6 +22,118 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  void showClockInDialog(BuildContext context, LocationState state) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: kGrey25, borderRadius: BorderRadius.circular(16)),
+            width: 512,
+            height: 512,
+            child: Column(
+              children: [
+                // Login info
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BoldText('Login info', 16, kBlack),
+                    const SizedBox(height: 6),
+                    RegularText('Status: Sign in', 14, kGrey500),
+                    RegularText('Check-in: ${DateTime.now().formatDateFull}',
+                        14, kGrey500),
+                    RegularText(
+                        'Latitude: ${state.data?.latitude}', 14, kGrey500),
+                    RegularText(
+                        'Longitude: ${state.data?.longitude}', 14, kGrey500),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                // Google Map
+                SizedBox(
+                  width: 410,
+                  height: 300,
+                  child: GoogleMap(
+                    myLocationEnabled: true,
+                    initialCameraPosition: CameraPosition(
+                      target:
+                          LatLng(state.data!.latitude, state.data!.longitude),
+                      zoom: 15,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CancelButton(
+                      title: 'Cancel',
+                      onTap: () => Navigator.of(context).pop(),
+                    ),
+                    CustomButton(
+                      title: 'Confirm',
+                      onTap: () {
+                        context
+                            .read<ClockinBloc>()
+                            .add(CreateClockIn(state.data!));
+                        context.pop();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void showClockOutDialog(BuildContext context, ClockinStatusState state) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                color: kGrey25, borderRadius: BorderRadius.circular(16)),
+            width: 512,
+            height: 150,
+            child: Column(
+              children: [
+                // Login info
+                BoldText('Are you sure want to Check Out?', 16, kBlack),
+                const Gap(30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CancelButton(
+                      title: 'Cancel',
+                      onTap: () => Navigator.of(context).pop(),
+                    ),
+                    CustomButton(
+                      title: 'Confirm',
+                      onTap: () {
+                        context
+                            .read<ClockinBloc>()
+                            .add(CreateClockOut(state.data!));
+                        context.pop();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -313,96 +427,74 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       SizedBox(height: 20),
                                       BlocBuilder<LocationBloc, LocationState>(
-                                        builder: (context, state) {
+                                        builder: (context, locationState) {
                                           switch (state.status) {
-                                            case ListStatus.initial:
-                                              return const Center(
-                                                  child:
-                                                      CircularProgressIndicator());
-
-                                            case ListStatus.loading:
-                                              return const Center(
-                                                  child:
-                                                      CircularProgressIndicator());
                                             case ListStatus.loaded:
-                                              return SizedBox(
-                                                width: 410,
-                                                height: 562,
-                                                child: Column(
-                                                  children: [
-                                                    //google map
-                                                    SizedBox(
-                                                      width: 410,
-                                                      height: 300,
-                                                      child: GoogleMap(
-                                                        myLocationEnabled: true,
-                                                        initialCameraPosition:
-                                                            CameraPosition(
-                                                          target: LatLng(
-                                                              state.data!
-                                                                  .latitude,
-                                                              state.data!
-                                                                  .longitude),
-                                                          zoom: 15,
-                                                        ),
+                                              return BlocBuilder<
+                                                  ClockinStatusBloc,
+                                                  ClockinStatusState>(
+                                                builder: (context, state) {
+                                                  bool clockedIn = (state
+                                                          .status ==
+                                                      ClockInStatus.clockedIn);
+                                                  final Color color = clockedIn
+                                                      ? kRed600
+                                                      : kGreen600;
+                                                  final String text = clockedIn
+                                                      ? 'Check out'
+                                                      : 'Check in ';
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      if (clockedIn) {
+                                                        showClockOutDialog(
+                                                            context, state);
+                                                      } else {
+                                                        showClockInDialog(
+                                                            context,
+                                                            locationState);
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      height: 44,
+                                                      width: 259,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(8),
+                                                          color: color),
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Image.asset(
+                                                              'assets/icons/tabler_line-scan.png'),
+                                                          SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Text(
+                                                            text,
+                                                            style: TextStyle(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color: Color
+                                                                  .fromRGBO(
+                                                                      255,
+                                                                      255,
+                                                                      255,
+                                                                      1),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              );
-                                            default:
-                                              throw UnimplementedError(
-                                                  'Not a valid state');
-                                          }
-                                        },
-                                      ),
-                                      SizedBox(height: 20),
-                                      BlocBuilder<LocationBloc, LocationState>(
-                                        builder: (context, state) {
-                                          switch (state.status) {
-                                            case ListStatus.loaded:
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  // context
-                                                  //     .read<ClockinBloc>()
-                                                  //     .add(CreateClockIn(
-                                                  //         state.data!));
+                                                  );
                                                 },
-                                                child: Container(
-                                                  height: 44,
-                                                  width: 259,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      color: Color.fromRGBO(
-                                                          18, 183, 106, 1)),
-                                                  child: Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Image.asset(
-                                                          'assets/icons/tabler_line-scan.png'),
-                                                      SizedBox(
-                                                        width: 10,
-                                                      ),
-                                                      Text(
-                                                        'Check in',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Color.fromRGBO(
-                                                              255, 255, 255, 1),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
                                               );
 
                                             default:

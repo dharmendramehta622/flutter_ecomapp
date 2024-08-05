@@ -20,4 +20,8 @@ class CreateClockIn extends ClockinEvent {
   const CreateClockIn(this.position);
 }
 
-class CreateClockOut extends ClockinEvent {}
+class CreateClockOut extends ClockinEvent {
+  final ClockInModel model;
+
+ const CreateClockOut(this.model);
+}

@@ -22,6 +22,12 @@ extension DateTimeExtension on DateTime {
   // New custom time format method for "03:45 PM"
   String get customTimeFormat => DateFormat('h:mm a').format(toLocal());
   
+  // ISO 8601 format method with milliseconds only
+  String get iso8601Format => DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(toUtc());
+  
+    // Format DateTime to local time in ISO 8601 format with milliseconds
+  String get localIso8601Format => DateFormat("yyyy-MM-ddTHH:mm:ss.SSS'Z'").format(this);
+
   String timeAgoString() {
     DateTime now = DateTime.now().toUtc();
     Duration timeDiff = now.difference(this);
