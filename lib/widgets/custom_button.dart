@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
-  CustomButton(
+class CustomButtons extends StatelessWidget {
+  CustomButtons(
       {super.key,
       required this.onTap,
       this.borderRadius,
@@ -11,6 +11,8 @@ class CustomButton extends StatelessWidget {
       required this.buttonText,
       required this.fontWeight,
       required this.fontSize,
+      required this.height,
+      required this.width,
       this.textColor});
 
   VoidCallback onTap;
@@ -20,10 +22,14 @@ class CustomButton extends StatelessWidget {
   String buttonText;
   double fontSize;
   dynamic fontWeight;
+  double height;
+  double width;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: height,
+      width: width,
       decoration: BoxDecoration(
         color: buttonColor,
         borderRadius: BorderRadius.circular(borderRadius ?? 0),
