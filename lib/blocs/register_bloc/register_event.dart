@@ -2,6 +2,7 @@
 
 
 import 'package:equatable/equatable.dart';
+
 import '../../Networks/models/register_model.dart';
 
 abstract class RegisterEvent extends Equatable {
@@ -12,11 +13,7 @@ abstract class RegisterEvent extends Equatable {
 }
 
 class RegisterTextFieldChangedEvent extends RegisterEvent {
-  final String name;
-  final String emailValue;
-  final String password;
-
- const RegisterTextFieldChangedEvent(this.name,this.emailValue, this.password);
+  
 }
 
 class RegisterStartedEvent extends RegisterEvent {

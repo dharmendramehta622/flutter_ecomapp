@@ -15,6 +15,9 @@ extension DateTimeExtension on DateTime {
   String get formatDateMonth => DateFormat('yyyy-MM-dd').format(toLocal());
 
   String get formatMonthDate => DateFormat('MMMM d, yyyy').format(toLocal());
+  
+  // Format DateTime to 'dd-MM-yyyy' format
+  String get formatDateDayMonthYear => DateFormat('dd-MM-yyyy').format(toLocal());
 
   // New custom format method
   String get customFormat => DateFormat('EEE, d MMMM yyyy').format(toLocal());

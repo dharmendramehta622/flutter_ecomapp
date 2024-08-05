@@ -50,23 +50,11 @@ class AuthService {
   Future<ApiResponse> registerWithEmailPassword(
       {required RegisterModel model}) async {
     final response = await ApiServices.instance
-        .post(url: _registerUrl, variables: model.toMap());
-    // try {
-    bool success = (response.status &&
-        response.msg?.data['signup']['access'] != null &&
-        response.msg?.data['signup']['refresh'] != null &&
-        response.msg?.data['signup']['message'] != "Email already exists.");
-
-    if (success) {
-      final access = response.msg?.data?.data['signup']['access'];
-      final refresh = response.msg?.data['signup']['refresh'];
-      await LocalStorageService.instance
-          .set(key: LocalStorageServiceItems.userToken, value: access);
-      await LocalStorageService.instance
-          .set(key: LocalStorageServiceItems.refreshToken, value: refresh);
+        .post(url: _registerUrl, variables: model.toMap()); 
+    if (response.status) {
       return response;
     } else {
-      return ApiResponse(status: false, msg: response.msg?.data);
+      return ApiResponse(status: false, msg: response.msg);
     }
   }
 }

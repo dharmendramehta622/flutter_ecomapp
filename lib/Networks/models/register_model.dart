@@ -1,6 +1,7 @@
  
 
 import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 
 class RegisterModel extends Equatable {
@@ -8,47 +9,38 @@ class RegisterModel extends Equatable {
   final String firstName;
   final String lastName;
   final String email;
-  final String password;
-  final String confirmPassword;
-  // final String? refer;
+  final String dob;
 
   const RegisterModel(
     this.firstName,
     this.lastName,
     this.email,
-    this.password,
-    this.confirmPassword,
+    this.dob,
     // this.refer,
   );
   @override
-  List<Object?> get props => [firstName,lastName,email, password, confirmPassword];
+  List<Object?> get props => [firstName,lastName,email, dob];
 
   RegisterModel copyWith({
     String? firstName,
     String? lastName,
     String? email,
-    String? password,
-    String? confirmPassword,
-    // String? password,
+    String? dob,  
   }) {
     return RegisterModel(
       firstName ?? this.firstName,
       lastName ?? this.lastName,
       email ?? this.email,
-      password ?? this.password,
-      confirmPassword ?? this.confirmPassword
-      // password ?? this.refer,
+      dob ?? this.dob, 
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-       "first_name":firstName,
-  "last_name": '',
-  "email": email.toLowerCase(),
-  "password": password,
-  "confirm_password":confirmPassword
-      
+      "first_name":firstName,
+      "last_name": lastName,
+      "email": email.toLowerCase(),
+      "dob": dob,  
     };
   }
 
@@ -57,8 +49,7 @@ class RegisterModel extends Equatable {
       map['first_name'] as String,
       map['last_name'] as String,
       map['email'] as String,
-      map['password'] as String,
-      map['confirm_password'] as String,
+      map['dob'] as String, 
       
     );
   }

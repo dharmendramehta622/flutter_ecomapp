@@ -220,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 25.0),
                         child: RegularText(state.message, 15, kRed600),
                       )
-                    : SizedBox(),
+                    : SizedBox.shrink(),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

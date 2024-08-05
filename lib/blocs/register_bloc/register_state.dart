@@ -11,6 +11,20 @@ class RegisterInitial extends RegisterState {}
 
 class RegisterLoading extends RegisterState {}
 
+class RegisterFNameErrorState extends RegisterState {
+  final String message;
+  const RegisterFNameErrorState(this.message);
+  @override
+  List<Object> get props => [message];
+}
+
+class RegisterLNameErrorState extends RegisterState {
+  final String message;
+  const RegisterLNameErrorState(this.message);
+  @override
+  List<Object> get props => [message];
+}
+
 class RegisterEmailErrorState extends RegisterState {
   final String message;
   const RegisterEmailErrorState(this.message);
@@ -21,6 +35,15 @@ class RegisterEmailErrorState extends RegisterState {
 class RegisterNameErrorState extends RegisterState {
   final String message;
   const RegisterNameErrorState(this.message);
+  @override
+  List<Object> get props => [message];
+}
+
+class RegisterDobErrorState extends RegisterState {
+  final String message;
+  const RegisterDobErrorState(
+    this.message
+  );
   @override
   List<Object> get props => [message];
 }
