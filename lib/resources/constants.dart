@@ -56,6 +56,20 @@ const Color kWhite = Color(0xFFFFFFFF);
 const Color kBlack = Color(0xFF1E232C);
 
 
+Widget BoldText(String txt, double fontSize, Color? color,
+        {int maxLines = 1}) =>
+    Text(
+      txt,
+      maxLines: 2,
+      style: GoogleFonts.roboto(
+        textStyle: TextStyle(
+            fontSize: fontSize,
+            color: color ?? kBlack,
+            fontWeight: FontWeight.w600,
+            overflow: TextOverflow.ellipsis),
+      ),
+    );
+
 Widget RegularText(String txt, double fontSize, Color? color,
         {int maxLines = 1}) =>
     Text(
