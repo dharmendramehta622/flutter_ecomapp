@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:new_project/screens/google_map_screen.dart';
 import 'package:new_project/screens/home_screen.dart';
 import 'package:new_project/screens/login_screen.dart';
 import 'package:new_project/screens/signup_screen.dart';
-
 import '../screens/splash_screen.dart';
 
 class Routes {
   static String landing = '/landing';
+  static String map = '/map';
   static String register = '/register';
   static String login = '/login';
   static String splash = '/';
@@ -54,10 +55,13 @@ mixin GoRoutes {
       path: Routes.landing,
       builder: (context, state) => const HomeScreen(),
     ),
+    GoRoute(
+      path: Routes.map,
+      builder: (context, state) => const GoogleMapScreen(),
+    ),
   ];
 
 //router config
-
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static GlobalKey<NavigatorState> shellNavigatorKey =
       GlobalKey<NavigatorState>();
