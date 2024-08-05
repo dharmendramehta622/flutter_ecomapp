@@ -16,6 +16,12 @@ extension DateTimeExtension on DateTime {
 
   String get formatMonthDate => DateFormat('MMMM d, yyyy').format(toLocal());
 
+  // New custom format method
+  String get customFormat => DateFormat('EEE, d MMMM yyyy').format(toLocal());
+
+  // New custom time format method for "03:45 PM"
+  String get customTimeFormat => DateFormat('h:mm a').format(toLocal());
+  
   String timeAgoString() {
     DateTime now = DateTime.now().toUtc();
     Duration timeDiff = now.difference(this);
