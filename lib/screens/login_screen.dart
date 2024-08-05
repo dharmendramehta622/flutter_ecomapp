@@ -278,9 +278,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.only(left: 15, right: 15),
                   child: InkWell(
                     onTap: () {
-                      context.read<LoginBloc>().add(LoginStartedEvent(
-                          LoginModel(bloc.emailController.text,
-                              bloc.passwordController.text, check)));
+                      if (state is LoginFormValid) {
+                        context.read<LoginBloc>().add(LoginStartedEvent(
+                            LoginModel(bloc.emailController.text,
+                                bloc.passwordController.text, check)));
+                      } else {
+                        showErrorMessage('Please fill up the form completely.');
+                      }
                     },
                     child: Container(
                       height: 55,

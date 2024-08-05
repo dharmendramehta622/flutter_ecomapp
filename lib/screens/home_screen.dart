@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -12,13 +14,12 @@ import 'package:new_project/blocs/login_bloc/login_event.dart';
 import 'package:new_project/resources/constants.dart';
 import 'package:new_project/resources/routes.dart';
 import 'package:new_project/resources/utils.dart';
-import 'package:new_project/utils/app_colors.dart';
-import 'package:new_project/widgets/custom_button.dart';
 
 import '../blocs/clockin_bloc/clockin_bloc.dart';
 import '../blocs/location_bloc/location_bloc.dart';
 import '../blocs/login_bloc/login_state.dart';
 import '../resources/ui_utils.dart';
+import '../widgets/custom_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,6 +29,33 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _hours = 0;
+  int _minutes = 0;
+  int _seconds = 0;
+  late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _seconds++;
+        if (_seconds >= 60) {
+          _seconds = 0;
+          _minutes++;
+        }
+        if (_minutes >= 60) {
+          _minutes = 0;
+          _hours++;
+        }
+      });
+    });
+  }
+
   void showClockInDialog(BuildContext context, LocationState state) {
     showDialog(
       context: context,
@@ -70,36 +98,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const Gap(16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomButtons(
-                      height: 44,
-                      width: 182,
+                    CancelButton(
                       onTap: () => Navigator.of(context).pop(),
-                      borderRadius: 8,
-                      textColor: AppColors.textColor,
-                      buttonColor: AppColors.greyColor,
-                      buttonText: 'Cancel',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
                     ),
-                    CustomButtons(
-                      height: 44,
-                      width: 182,
+                    CustomButton(
                       onTap: () {
                         context
                             .read<ClockinBloc>()
                             .add(CreateClockIn(state.data!));
                         context.pop();
                       },
-                      borderRadius: 8,
-                      textColor: AppColors.whiteColor,
-                      buttonColor: AppColors.purpleColor,
-                      buttonText: 'Confirm',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
                     ),
                   ],
                 ),
@@ -119,8 +131,8 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Container(
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-                color: kGrey25, borderRadius: BorderRadius.circular(16)),
-            width: 512,
+                color: kWhite, borderRadius: BorderRadius.circular(16)),
+            width: 700,
             height: 150,
             child: Column(
               children: [
@@ -130,32 +142,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomButtons(
-                      height: 44,
-                      width: 182,
+                    CancelButton(
                       onTap: () => Navigator.of(context).pop(),
-                      borderRadius: 8,
-                      textColor: AppColors.textColor,
-                      buttonColor: AppColors.greyColor,
-                      buttonText: 'Cancel',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
                     ),
-                    CustomButtons(
-                      height: 44,
-                      width: 182,
+                    CustomButton(
                       onTap: () {
                         context
                             .read<ClockinBloc>()
                             .add(CreateClockOut(state.data!));
                         context.pop();
                       },
-                      borderRadius: 8,
-                      textColor: AppColors.whiteColor,
-                      buttonColor: AppColors.purpleColor,
-                      buttonText: 'Confirm',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
                     ),
                   ],
                 ),
@@ -175,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
         listener: (context, state) {
           switch (state.status) {
             case ListStatus.success:
-              // showSuccessMessage(state.message);
+              context.read<ClockinStatusBloc>().add(CheckClockIn());
               break;
             case ListStatus.failure:
               showErrorMessage(state.message);
@@ -235,35 +231,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                         fit: BoxFit.cover,
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
+                                    const Gap(10),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          'John Doe',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color: Color.fromRGBO(
-                                                255, 255, 255, 1),
-                                            letterSpacing: -0.6,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Flutter Developer',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            color: Color.fromRGBO(
-                                                255, 255, 255, 1),
-                                            letterSpacing: -0.4,
-                                          ),
-                                        ),
+                                        BoldText('John Doe', 16, kWhite),
+                                        RegularText(
+                                            'Flutter Developer', 14, kWhite),
                                       ],
                                     ),
                                   ],
@@ -276,7 +253,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                   child: GestureDetector(
                                     onTap: () {
-                                      print('logout');
                                       context
                                           .read<LoginBloc>()
                                           .add(LogoutRequested());
@@ -310,24 +286,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        DateTime.now().customFormat,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color.fromRGBO(16, 24, 40, 1),
-                                          letterSpacing: -0.4,
-                                        ),
-                                      ),
-                                      Text(
-                                        DateTime.now().customTimeFormat,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color.fromRGBO(16, 24, 40, 1),
-                                          letterSpacing: -0.4,
-                                        ),
-                                      ),
+                                      BoldText(DateTime.now().customFormat, 14,
+                                          kGrey900),
+                                      BoldText(DateTime.now().customTimeFormat,
+                                          14, kGrey900),
                                     ],
                                   ),
                                   SizedBox(
@@ -338,131 +300,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              color: Color.fromRGBO(
-                                                  242, 244, 247, 1),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  '00',
-                                                  style: TextStyle(
-                                                    fontSize: 19,
-                                                    fontWeight: FontWeight.w800,
-                                                    color: Color.fromRGBO(
-                                                        16, 24, 40, 1),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'HOURS',
-                                                  style: TextStyle(
-                                                    fontSize: 8,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color.fromRGBO(
-                                                        16, 24, 40, 1),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              color: Color.fromRGBO(
-                                                  242, 244, 247, 1),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  '00',
-                                                  style: TextStyle(
-                                                    fontSize: 19,
-                                                    fontWeight: FontWeight.w800,
-                                                    color: Color.fromRGBO(
-                                                        16, 24, 40, 1),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'MINUTES',
-                                                  style: TextStyle(
-                                                    fontSize: 8,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color.fromRGBO(
-                                                        16, 24, 40, 1),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              color: Color.fromRGBO(
-                                                  242, 244, 247, 1),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  '00',
-                                                  style: TextStyle(
-                                                    fontSize: 19,
-                                                    fontWeight: FontWeight.w800,
-                                                    color: Color.fromRGBO(
-                                                        16, 24, 40, 1),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'SECONDS',
-                                                  style: TextStyle(
-                                                    fontSize: 8,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Color.fromRGBO(
-                                                        16, 24, 40, 1),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                      BlocBuilder<ClockinStatusBloc,
+                                          ClockinStatusState>(
+                                        builder: (context, state) {
+                                          switch (state.status) {
+                                            case ClockInStatus.clockedIn:
+                                              return TimerWidget(
+                                                  checkInTime:
+                                                      state.data!.checkIn!);
+                                            default:
+                                              return Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  _buildTimeContainer(
+                                                      0, 'HOURS'),
+                                                  const Gap(5),
+                                                  _buildTimeContainer(
+                                                      0, 'MINUTES'),
+                                                  const Gap(5),
+                                                  _buildTimeContainer(
+                                                      0, 'SECONDS'),
+                                                ],
+                                              );
+                                          }
+                                        },
                                       ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
+                                      const Gap(20),
                                       Text(
                                         'General 10:00 AM to 06:00 PM',
                                         style: TextStyle(
@@ -642,13 +508,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
+                        SizedBox(height: 10),
                         Container(
                           height: 48,
                           padding: EdgeInsets.all(15),
-                          color: Color.fromRGBO(105, 56, 239, 1),
+                          color: kPrimary600,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -697,7 +561,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: ListView.separated(
                                   itemCount: state.data.length,
                                   shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
                                   scrollDirection: Axis.vertical,
+                                  padding: EdgeInsets.zero,
                                   separatorBuilder:
                                       (BuildContext context, int index) {
                                     return const Gap(12);
@@ -705,18 +571,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     final e = state.data[index] as ClockInModel;
-                                    return Container(
-                                      width: 358,
-                                      height: 58.75,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(color: kGreen200)),
-                                      child: Row(
-                                        children: [
-                                          RegularText(
-                                              e.id.toString(), 12, kBlack),
-                                        ],
-                                      ),
-                                    );
+                                    return CustomCard(e: e);
                                   },
                                 ),
                               );
@@ -733,6 +588,87 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
+    );
+  }
+}
+
+Widget _buildTimeContainer(int value, String label) {
+  return Container(
+    height: 60,
+    width: 60,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8),
+      color: Color.fromRGBO(242, 244, 247, 1),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        BoldText(value.toString().padLeft(2, '0'), 19, kGrey900),
+        BoldText(label, 8, kGrey900),
+      ],
+    ),
+  );
+}
+
+class TimerWidget extends StatefulWidget {
+  final DateTime checkInTime;
+
+  const TimerWidget({super.key, required this.checkInTime});
+
+  @override
+  _TimerWidgetState createState() => _TimerWidgetState();
+}
+
+class _TimerWidgetState extends State<TimerWidget> {
+  int _hours = 0;
+  int _minutes = 0;
+  int _seconds = 0;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      final now = DateTime.now();
+      final difference = now.difference(widget.checkInTime);
+
+      setState(() {
+        _hours = difference.inHours;
+        _minutes = difference.inMinutes % 60;
+        _seconds = difference.inSeconds % 60;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildTimeContainer(_hours, 'HOURS'),
+            SizedBox(width: 5),
+            _buildTimeContainer(_minutes, 'MINUTES'),
+            SizedBox(width: 5),
+            _buildTimeContainer(_seconds, 'SECONDS'),
+          ],
+        ),
+      ],
     );
   }
 }

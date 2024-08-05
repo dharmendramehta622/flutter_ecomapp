@@ -12,7 +12,6 @@ class ClockinBloc extends Bloc<ClockinEvent, ClockinListState> {
   final ClockInServices _services = ClockInServices();
 
   ClockinBloc() : super(const ClockinListState()) {
-    
     on<LoadClockInList>((event, emit) async {
       emit(state.copyWith(status: ListStatus.loading));
       final res = await _services.getClockInReport();
@@ -27,12 +26,11 @@ class ClockinBloc extends Bloc<ClockinEvent, ClockinListState> {
       emit(state.copyWith(status: ListStatus.loading));
       final res = await _services.createClockIn(event.position);
       if (res.status) {
+        emit(state.copyWith(status: ListStatus.success));
         add(LoadClockInList());
       } else {
         emit(state.copyWith(
-          status: ListStatus.failure,
-          message: res.msg?.data['message']
-        ));
+            status: ListStatus.failure, message: res.msg?.data['message']));
         add(LoadClockInList());
       }
     });
@@ -41,6 +39,7 @@ class ClockinBloc extends Bloc<ClockinEvent, ClockinListState> {
       emit(state.copyWith(status: ListStatus.loading));
       final res = await _services.clockOut(event.model);
       if (res.status) {
+        emit(state.copyWith(status: ListStatus.success));
         add(LoadClockInList());
       }
     });

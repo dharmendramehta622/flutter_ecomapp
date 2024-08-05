@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 double get screenWidth => ScreenUtil().screenWidth;
 double get screenHeight => ScreenUtil().screenHeight;
-double screen_width(double _per) => screenWidth * _per;
-double screen_height(double _per) => screenHeight * _per;
+double screen_width(double per) => screenWidth * per;
+double screen_height(double per) => screenHeight * per;
 
 // UI Constants
 const Color kGrey = Color(0xff344054);
@@ -25,7 +25,7 @@ const Color kGrey900 = Color(0xff101828);
 
 const Color kGreen25 = Color(0xffD1FADF);
 const Color kGreen50 = Color(0xffF6FEF9);
-const Color kGreen100 = Color(0xff0D1FADF);
+const Color kGreen100 = Color(0xff0d1fadf);
 const Color kGreen200 = Color(0xff027A48);
 const Color kGreen400 = Color(0xff0C9D2C);
 const Color kGreen500 = Color(0xff12B76A);
@@ -61,11 +61,27 @@ Widget BoldText(String txt, double fontSize, Color? color,
     Text(
       txt,
       maxLines: 2,
-      style: GoogleFonts.roboto(
+      textAlign: TextAlign.center,
+      style: GoogleFonts.inter(
         textStyle: TextStyle(
             fontSize: fontSize,
             color: color ?? kBlack,
             fontWeight: FontWeight.w600,
+            overflow: TextOverflow.ellipsis),
+      ),
+    );
+
+Widget SemiBoldText(String txt, double fontSize, Color? color,
+        {int maxLines = 1}) =>
+    Text(
+      txt,
+      maxLines: 2,
+      textAlign: TextAlign.center,
+      style: GoogleFonts.inter(
+        textStyle: TextStyle(
+            fontSize: fontSize,
+            color: color ?? kBlack,
+            fontWeight: FontWeight.w500,
             overflow: TextOverflow.ellipsis),
       ),
     );
@@ -75,7 +91,8 @@ Widget RegularText(String txt, double fontSize, Color? color,
     Text(
       txt,
       maxLines: 2,
-      style: GoogleFonts.roboto(
+      textAlign: TextAlign.center,
+      style: GoogleFonts.inter(
         textStyle: TextStyle(
             fontSize: fontSize,
             color: color ?? kBlack,

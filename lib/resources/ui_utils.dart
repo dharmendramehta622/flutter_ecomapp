@@ -79,19 +79,17 @@ class CustomButton extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Container(
-          height: 55,
+          height: 44,
           width: screenWidth * .3,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: const Color.fromRGBO(105, 56, 239, 1),
+            color: kPrimary600,
           ),
           child: Center(
-            child: Text(
+            child: BoldText(
               title,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Color.fromRGBO(255, 255, 255, 1)),
+              16,
+              kWhite,
             ),
           ),
         ),
@@ -112,19 +110,26 @@ class CancelButton extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Container(
-          height: 55,
+          height: 44,
           width: screenWidth * .3,
           decoration: BoxDecoration(
+            // border: Border.all(color: kGrey25),
             borderRadius: BorderRadius.circular(8),
-            color: kGrey500,
+            color: kGrey100,
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x0C101828),
+                blurRadius: 2,
+                offset: Offset(0, 1),
+                spreadRadius: 0,
+              )
+            ],
           ),
           child: Center(
-            child: Text(
+            child: BoldText(
               title,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Color.fromRGBO(255, 255, 255, 1)),
+              16,
+              kGrey900,
             ),
           ),
         ),

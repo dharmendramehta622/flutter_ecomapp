@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:new_project/Networks/ApiServices.dart';
@@ -21,7 +23,7 @@ class ClockInServices {
       "check_out": DateTime.now().iso8601Format.toString()
     };
     final response = await ApiServices.instance
-        .patch(url: '/attendance/clockin/', variables: variables);
+        .patch(url: '/attendance/clockin/${model.id}/', variables: variables);
     return response;
   }
 
@@ -46,7 +48,8 @@ class ClockInServices {
         var checkInDate = DateTime.parse(model['check_in']);
         String checkInDateString =
             DateFormat('yyyy-MM-dd').format(checkInDate.toUtc());
-        return checkInDateString == todayDateString;
+        return checkInDateString == todayDateString &&
+            model['check_out'] == null;
       },
       orElse: () => {},
     );

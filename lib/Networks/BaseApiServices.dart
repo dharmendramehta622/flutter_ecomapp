@@ -121,7 +121,7 @@ abstract class ApiBaseModel {
     try {
       final response = await dio.patch(
         '${ApiConstant.httpBase + ApiConstant.apiBaseUrl}$url',
-        options: Options(contentType: Headers.formUrlEncodedContentType),
+        options: Options( method: 'PATCH'),
         data: formData ?? json.encode(variables),
       );
       _successLogger(
