@@ -8,6 +8,7 @@ import 'package:new_project/blocs/login_bloc/login_event.dart';
 import 'package:new_project/blocs/login_bloc/login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
+  
   final AuthService _authService = AuthService();
   late String message;
   TextEditingController emailController = TextEditingController();
@@ -19,6 +20,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   LoginBloc() : super(LoginInitial()) {
+
     on<LoginStartedEvent>((event, emit) async {
       emit(LoginLoading());
       final ApiResponse response =
@@ -36,6 +38,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<ClientLoginSuccessEvent>((event, emit) async {
       emit(ClientLoginSucessState(event.message));
     });
+
     on<AdminLoginSuccessEvent>((event, emit) async {
       emit(AdminLoginSucessState(event.message, event.sessionInfo));
     });
@@ -64,5 +67,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           .delete(LocalStorageServiceItems.userToken);
       emit(const LogoutSuccessState('Logged out successfully'));
     });
+
   }
 }

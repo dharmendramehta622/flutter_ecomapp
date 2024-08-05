@@ -7,11 +7,15 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:new_project/Networks/models/clockin_model.dart';
 import 'package:new_project/blocs/clockin_status_bloc/clockin_status_bloc.dart';
+import 'package:new_project/blocs/login_bloc/login_bloc.dart';
+import 'package:new_project/blocs/login_bloc/login_event.dart';
 import 'package:new_project/resources/constants.dart';
+import 'package:new_project/resources/routes.dart';
 import 'package:new_project/resources/utils.dart';
 
 import '../blocs/clockin_bloc/clockin_bloc.dart';
 import '../blocs/location_bloc/location_bloc.dart';
+import '../blocs/login_bloc/login_state.dart';
 import '../resources/ui_utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,7 +26,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   void showClockInDialog(BuildContext context, LocationState state) {
     showDialog(
       context: context,
@@ -235,7 +238,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ],
                                 ),
-                                Image.asset('assets/icons/notification.png'),
+                                BlocListener<LoginBloc, LoginState>(
+                                  listener: (context, state) {
+                                    if (state is LogoutSuccessState) {
+                                      context.go(Routes.login);
+                                    }
+                                  },
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print('logout');
+                                      context
+                                          .read<LoginBloc>()
+                                          .add(LogoutRequested());
+                                    },
+                                    child: Icon(Icons.logout,color: kWhite),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
