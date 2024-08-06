@@ -8,6 +8,7 @@ import 'package:new_project/Networks/models/clockin_model.dart';
 import 'package:new_project/resources/utils.dart';
 
 class ClockInServices {
+  
   Future<ApiResponse> createClockIn(Position position) async {
     Map<String, dynamic> variables = {
       "lat": position.latitude.toStringAsFixed(6),

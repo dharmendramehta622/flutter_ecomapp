@@ -4,14 +4,10 @@ import 'package:new_project/Networks/BaseApiServices.dart';
 import 'package:new_project/Networks/StorageServices.dart';
 import 'package:new_project/Networks/models/login_model.dart';
 import 'package:new_project/Networks/models/register_model.dart';
-import 'package:new_project/Networks/models/session_info.dart';
 
 class AuthService {
   final String _registerUrl = '/user/register/';
-  final String _loginUrl = '/user/login/';
-  final String _deleteAccountUrl = '/customer/delete-account';
-  late SessionInfo _sessionInfo;
-  Map<String, dynamic>? _userData;
+  final String _loginUrl = '/user/login/'; 
 
   Future<dynamic> getProfileId() async {
     final token = await LocalStorageService.instance
@@ -26,7 +22,7 @@ class AuthService {
     final response = await ApiServices.instance
         .post(url: _loginUrl, variables: model.toMap());
     if (response.status) {
-      if (model.remember) {
+      // if (model.remember) {
         final access = response.msg?.data['data']['access'];
         final refresh = response.msg?.data['data']['refresh'];
 
@@ -34,7 +30,7 @@ class AuthService {
             .set(key: LocalStorageServiceItems.userToken, value: access);
         await LocalStorageService()
             .set(key: LocalStorageServiceItems.refreshToken, value: refresh);
-      }
+      // }
     }
     return response;
   }

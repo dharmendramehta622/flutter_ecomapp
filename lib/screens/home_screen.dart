@@ -548,6 +548,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                         ),
+                        // clock in items list view
                         Builder(builder: (context) {
                           switch (state.status) {
                             case ListStatus.initial:
@@ -575,6 +576,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                 ),
                               );
+                            default:
+                              throw UnimplementedError('Not a valid state');
+                          }
+                        }),
+                        //total hours text
+                        Builder(builder: (context) {
+                          switch (state.status) {
+                            case ListStatus.initial:
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            case ListStatus.loading:
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            case ListStatus.loaded:
+                              int hours = state.totalHours.floor();
+                              int minutes =
+                                  ((state.totalHours - hours) * 60).round();
+                              return Container(
+                                  width: 390,
+                                  height: 48,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 72, vertical: 15),
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration:
+                                      BoxDecoration(color: Color(0xFFF2F4F7)),
+                                  child: SemiBoldText(
+                                      'Total Hours: $hours hrs $minutes mins',
+                                      14,
+                                      kGrey900));
                             default:
                               throw UnimplementedError('Not a valid state');
                           }
