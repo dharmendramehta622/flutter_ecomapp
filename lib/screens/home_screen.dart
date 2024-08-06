@@ -42,17 +42,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        _seconds++;
-        if (_seconds >= 60) {
-          _seconds = 0;
-          _minutes++;
-        }
-        if (_minutes >= 60) {
-          _minutes = 0;
-          _hours++;
-        }
-      });
+      if (mounted) {
+        setState(() {
+          _seconds++;
+          if (_seconds >= 60) {
+            _seconds = 0;
+            _minutes++;
+          }
+          if (_minutes >= 60) {
+            _minutes = 0;
+            _hours++;
+          }
+        });
+      }
     });
   }
 
@@ -161,6 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -549,6 +557,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         // clock in items list view
+                        const Gap(12),
                         Builder(builder: (context) {
                           switch (state.status) {
                             case ListStatus.initial:
@@ -580,6 +589,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               throw UnimplementedError('Not a valid state');
                           }
                         }),
+                        const Gap(12),
                         //total hours text
                         Builder(builder: (context) {
                           switch (state.status) {
@@ -595,7 +605,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ((state.totalHours - hours) * 60).round();
                               return Container(
                                   width: 390,
-                                  height: 48,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 72, vertical: 15),
                                   clipBehavior: Clip.antiAlias,

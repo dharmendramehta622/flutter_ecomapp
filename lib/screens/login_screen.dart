@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:new_project/Networks/models/login_model.dart';
 import 'package:new_project/blocs/login_bloc/login_event.dart';
 import 'package:new_project/resources/routes.dart';
-import 'package:new_project/screens/first_time_login.dart';
 
 import '../blocs/login_bloc/login_bloc.dart';
 import '../blocs/login_bloc/login_state.dart';
@@ -249,26 +248,26 @@ class _LoginScreenState extends State<LoginScreen> {
                         )
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Center(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FirstTimeLogin()));
-                          },
-                          child: Text(
-                            'Forgot Password',
-                            style: TextStyle(
-                                color: Color.fromRGBO(89, 37, 220, 1),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(15.0),
+                    //   child: Center(
+                    //     child: InkWell(
+                    //       onTap: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => FirstTimeLogin()));
+                    //       },
+                    //       child: Text(
+                    //         'Forgot Password',
+                    //         style: TextStyle(
+                    //             color: Color.fromRGBO(89, 37, 220, 1),
+                    //             fontWeight: FontWeight.w600,
+                    //             fontSize: 14),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(
