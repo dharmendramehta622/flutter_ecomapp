@@ -87,10 +87,20 @@ If you would like to contribute to this project, please follow these steps:
 5. Push to the branch (`git push origin feature/your-feature-name`)
 6. Create a new Pull Request
 
+### Build App Bundle
+
+```bash
+fvm flutter build appbundle --no-tree-shake-icons
+```
+
+### Build APK
+
+```bash
+fvm flutter build apk --no-tree-shake-icons
+```
+
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-##  BUILD APP BUNDLE
-fvm flutter build appbundle --no-tree-shake-icons
-fvm flutter build apk --no-tree-shake-icons
+ 
