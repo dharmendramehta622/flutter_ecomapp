@@ -6,7 +6,7 @@ This is a Flutter project managed using Flutter Version Management (FVM).
 ## Prerequisites
 
 - [Flutter](https://flutter.dev/docs/get-started/install)
-- [FVM](https://fvm.app/docs/getting_started/installation)
+- [FVM](https://fvm.app/documentation/getting-started/installation)
 
 ## Getting Started
 
