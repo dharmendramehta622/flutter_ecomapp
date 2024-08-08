@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:new_project/Networks/models/login_model.dart';
+import 'package:new_project/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:new_project/blocs/login_bloc/login_event.dart';
 import 'package:new_project/resources/routes.dart';
 
+import '../blocs/authentication_bloc/authentication_event.dart';
 import '../blocs/login_bloc/login_bloc.dart';
 import '../blocs/login_bloc/login_state.dart';
 import '../resources/constants.dart';
@@ -43,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is ClientLoginSucessState) {
+          context.read<AuthenticationBloc>().add(AuthenticationStatusChanged());
           context.replace(Routes.landing);
         }
         if (state is LoginFailedState) {
@@ -190,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: TextFormField(
                           controller: bloc.passwordController,
                           focusNode: passwordFocusNode,
-                          obscureText: true,
+                          obscureText: false,
                           obscuringCharacter: '•',
                           decoration: InputDecoration(
                               constraints: BoxConstraints(
@@ -275,33 +278,37 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 15, right: 15),
-                  child: InkWell(
-                    onTap: () {
-                      if (state is LoginFormValid) {
-                        context.read<LoginBloc>().add(LoginStartedEvent(
-                            LoginModel(bloc.emailController.text,
-                                bloc.passwordController.text, check)));
-                      } else {
-                        showErrorMessage('Please fill up the form completely.');
-                      }
-                    },
-                    child: Container(
-                      height: 55,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Color.fromRGBO(105, 56, 239, 1),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Login',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Color.fromRGBO(255, 255, 255, 1)),
+                  child: (state is LoginLoading)
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            // if (state is LoginFormValid) {
+                            context.read<LoginBloc>().add(LoginStartedEvent(
+                                LoginModel(bloc.emailController.text,
+                                    bloc.passwordController.text, check)));
+                            // } else {
+                            //   showErrorMessage('Please fill up the form completely.');
+                            // }
+                          },
+                          child: Container(
+                            height: 55,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color.fromRGBO(105, 56, 239, 1),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Login',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: Color.fromRGBO(255, 255, 255, 1)),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                 ),
                 SizedBox(
                   height: 15,

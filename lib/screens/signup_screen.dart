@@ -293,36 +293,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const Gap(30),
                 Padding(
                   padding: const EdgeInsets.only(left: 15, right: 15),
-                  child: InkWell(
-                    onTap: () {
-                      if (state is RegisterFormValidState) {
-                        context.read<RegisterBloc>().add(RegisterStartedEvent(
-                            RegisterModel(
-                                bloc.fnameController.text.trim(),
-                                bloc.lnameController.text.trim(),
-                                bloc.emailController.text.trim(),
-                                bloc.dobController.text)));
-                      } else {
-                        showErrorMessage('Please fill up the form completely.');
-                      }
-                    },
-                    child: Container(
-                      height: 55,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: kPrimary600,
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Sign Up',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Color.fromRGBO(255, 255, 255, 1)),
+                  child: (state is RegisterLoading)
+                      ? Center(child: CircularProgressIndicator())
+                      : InkWell(
+                          onTap: () {
+                            // if (state is RegisterFormValidState) {
+
+                            context.read<RegisterBloc>().add(
+                                RegisterStartedEvent(RegisterModel(
+                                    bloc.fnameController.text.trim(),
+                                    bloc.lnameController.text.trim(),
+                                    bloc.emailController.text.trim(),
+                                    bloc.dobController.text)));
+                            // } else {
+                            //   showErrorMessage('Please fill up the form completely.');
+                            // }
+                          },
+                          child: Container(
+                            height: 55,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: kPrimary600,
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
+                                    color: Color.fromRGBO(255, 255, 255, 1)),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                 ),
                 SizedBox(
                   height: 15,
