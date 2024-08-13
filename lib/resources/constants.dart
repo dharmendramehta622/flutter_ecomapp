@@ -91,7 +91,7 @@ Widget RegularText(String txt, double fontSize, Color? color,
     Text(
       txt,
       maxLines: 2,
-      textAlign: TextAlign.center,
+      textAlign: TextAlign.left,
       style: GoogleFonts.inter(
         textStyle: TextStyle(
             fontSize: fontSize,

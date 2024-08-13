@@ -1,4 +1,4 @@
-package com.example.new_project
+package com.tezda.ecomapp
 
 import io.flutter.embedding.android.FlutterActivity
 

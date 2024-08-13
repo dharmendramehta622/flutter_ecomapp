@@ -3,7 +3,9 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:new_project/Networks/services/product_service.dart';
 import 'package:stream_transform/stream_transform.dart';
+
 import '../../Networks/models/product_model.dart';
+
 part 'product_event.dart';
 part 'product_state.dart';
 
@@ -27,7 +29,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   Future<void> _onPostFetched(
       ProductFetched event, Emitter<ProductState> emit) async {
-    emit(state.copyWith(status: PostStatus.loading));
     if (state.hasReachedMax) return;
     try {
       if (state.status == PostStatus.initial) {

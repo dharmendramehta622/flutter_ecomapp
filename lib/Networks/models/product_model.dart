@@ -4,9 +4,10 @@
 import 'dart:convert';
 
 class ProductModel {
+
     final int? id;
     final String? title;
-    final String? price;
+    final dynamic price;
     final String? category;
     final String? description;
     final String? image;
@@ -23,7 +24,7 @@ class ProductModel {
     ProductModel copyWith({
         int? id,
         String? title,
-        String? price,
+        dynamic price,
         String? category,
         String? description,
         String? image,
@@ -44,7 +45,7 @@ class ProductModel {
     factory ProductModel.fromMap(Map<String, dynamic> json) => ProductModel(
         id: json["id"],
         title: json["title"],
-        price: json["price"],
+        price: json["price"] ,
         category: json["category"],
         description: json["description"],
         image: json["image"],

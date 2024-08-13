@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:new_project/Networks/models/product_model.dart';
 import 'package:new_project/screens/home_screen.dart';
 import 'package:new_project/screens/login_screen.dart';
+import 'package:new_project/screens/product_detail_screen.dart';
 import 'package:new_project/screens/signup_screen.dart';
+
 import '../screens/splash_screen.dart';
 
 class Routes {
   static String landing = '/landing';
-  static String map = '/map';
+  static String detail = '/detail';
   static String register = '/register';
   static String login = '/login';
   static String splash = '/';
@@ -54,7 +57,13 @@ mixin GoRoutes {
       path: Routes.landing,
       builder: (context, state) => const HomeScreen(),
     ),
- 
+    GoRoute(
+      path: Routes.detail,
+      builder: (context, state) {
+        final e = state.extra as ProductModel;
+        return ProductDetailScreen(e);
+      },
+    ),
   ];
 
 //router config
@@ -65,7 +74,7 @@ mixin GoRoutes {
   static final router = GoRouter(
     navigatorKey: navigatorKey,
     initialLocation: '/',
-    redirectLimit: 3, 
+    redirectLimit: 3,
     routes: routes,
     observers: [
       GoRouterObserver(),
