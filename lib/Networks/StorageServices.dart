@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum LocalStorageServiceItems {
   userID,
   userToken,
+  email,
+  password,
   refreshToken,
   logo,
   currentLocation
@@ -16,6 +18,10 @@ extension LocalStorageServiceItemsConfig on LocalStorageServiceItems {
         return 'user-token';
       case LocalStorageServiceItems.refreshToken:
         return 'refresh';
+      case LocalStorageServiceItems.email:
+        return 'email';
+      case LocalStorageServiceItems.password:
+        return 'password';
       case LocalStorageServiceItems.userID:
         return 'user-id';
       case LocalStorageServiceItems.logo:

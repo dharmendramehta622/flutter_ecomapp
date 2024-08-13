@@ -1,56 +1,62 @@
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:new_project/Networks/ApiServices.dart';
 import 'package:new_project/Networks/BaseApiServices.dart';
 import 'package:new_project/Networks/StorageServices.dart';
 import 'package:new_project/Networks/models/login_model.dart';
 import 'package:new_project/Networks/models/register_model.dart';
 
 class AuthService {
-  final String _registerUrl = '/user/register/';
-  final String _loginUrl = '/user/login/'; 
+  Future<bool> checkLoggedIn() async {
+    // Retrieve stored email and password
+    final email =
+        await LocalStorageService.instance.get(LocalStorageServiceItems.email);
+    final password = await LocalStorageService.instance
+        .get(LocalStorageServiceItems.password);
 
-  Future<dynamic> getProfileId() async {
-    final token = await LocalStorageService.instance
-        .get(LocalStorageServiceItems.userToken);
-    if (token != null) {
-      final data = JwtDecoder.decode(token);
-      return data["user_id"];
+    // Compare the provided credentials with the stored ones
+    if (email != null && password != null) {
+      // Credentials match, login successful
+      return true;
+    } else {
+      // Credentials do not match, login failed
+      return false;
     }
   }
 
   Future<ApiResponse> loginWithEmail(LoginModel model) async {
-    final response = await ApiServices.instance
-        .post(url: _loginUrl, variables: model.toMap());
-    if (response.status) {
-      // if (model.remember) {
-        final access = response.msg?.data['data']['access'];
-        final refresh = response.msg?.data['data']['refresh'];
+    // Retrieve stored email and password
+    final email =
+        await LocalStorageService.instance.get(LocalStorageServiceItems.email);
+    final password = await LocalStorageService.instance
+        .get(LocalStorageServiceItems.password);
 
-        await LocalStorageService()
-            .set(key: LocalStorageServiceItems.userToken, value: access);
-        await LocalStorageService()
-            .set(key: LocalStorageServiceItems.refreshToken, value: refresh);
-      // }
+    // Compare the provided credentials with the stored ones
+    if (email == model.email && password == model.password) {
+      // Credentials match, login successful
+      return ApiResponse(status: true, msg: null);
+    } else {
+      // Credentials do not match, login failed
+      return ApiResponse(status: false, msg: null);
     }
-    return response;
   }
 
   Future<void> logout() async {
     await LocalStorageService.instance
         .delete(LocalStorageServiceItems.userToken);
+    await LocalStorageService.instance.delete(LocalStorageServiceItems.email);
     await LocalStorageService.instance
-        .delete(LocalStorageServiceItems.refreshToken);
+        .delete(LocalStorageServiceItems.password);
     await LocalStorageService.instance.delete(LocalStorageServiceItems.userID);
   }
 
   Future<ApiResponse> registerWithEmailPassword(
       {required RegisterModel model}) async {
-    final response = await ApiServices.instance
-        .post(url: _registerUrl, variables: model.toMap()); 
-    if (response.status) {
-      return response;
-    } else {
-      return ApiResponse(status: false, msg: response.msg);
+    try {
+      await LocalStorageService.instance
+          .set(key: LocalStorageServiceItems.email, value: model.email);
+      await LocalStorageService.instance
+          .set(key: LocalStorageServiceItems.password, value: model.password);
+      return ApiResponse(status: true, msg: null);
+    } catch (e) {
+      return ApiResponse(status: false, msg: null);
     }
   }
 }

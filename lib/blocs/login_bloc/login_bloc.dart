@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:new_project/Networks/BaseApiServices.dart';
-import 'package:new_project/Networks/StorageServices.dart';
 import 'package:new_project/Networks/services/auth_service.dart';
 import 'package:new_project/blocs/login_bloc/login_event.dart';
 import 'package:new_project/blocs/login_bloc/login_state.dart';
@@ -20,7 +19,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   LoginBloc() : super(LoginInitial()) {
-
     on<LoginStartedEvent>((event, emit) async {
       emit(LoginLoading());
       final ApiResponse response =
@@ -30,8 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         _clear();
         add(ClientLoginSuccessEvent(message));
       } else {
-        final message = response.msg?.data['data'];
-        emit(LoginFailedState(message));
+        emit(const LoginFailedState('Login failed.'));
       }
     });
 
@@ -53,20 +50,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else if (!EmailValidator.validate(event.email.trim())) {
         emit(const LoginEmailErrorState('Please enter a valid email address.'));
       } else if (event.password.isEmpty) {
-        emit(const LoginPasswordErrorState('Password cannot be empty'));
-      } else if (event.password.length < 8) {
-        emit(const LoginPasswordErrorState(
-            'Please enter a password 8 characters long.'));
+        emit(const LoginPasswordErrorState('Password cannot be empty.'));
       } else {
         emit(LoginFormValid());
       }
     });
 
     on<LogoutRequested>((event, emit) async {
-      await LocalStorageService.instance
-          .delete(LocalStorageServiceItems.userToken);
+      await _authService.logout();
       emit(const LogoutSuccessState('Logged out successfully'));
     });
-
   }
 }

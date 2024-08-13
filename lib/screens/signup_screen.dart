@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:date_format_field/date_format_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -9,7 +8,6 @@ import 'package:new_project/Networks/models/register_model.dart';
 import 'package:new_project/blocs/register_bloc/register_event.dart';
 import 'package:new_project/resources/routes.dart';
 import 'package:new_project/resources/ui_utils.dart';
-import 'package:new_project/resources/utils.dart';
 import 'package:new_project/screens/login_screen.dart';
 
 import '../blocs/register_bloc/register_bloc.dart';
@@ -77,125 +75,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 24),
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'First Name*',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: Color.fromRGBO(2, 64, 84, 1)),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(0, 1),
-                                blurRadius: 2,
-                                color: Color.fromRGBO(16, 24, 40, 0.05),
-                                spreadRadius: 1,
-                              )
-                            ]),
-                        child: TextFormField(
-                          controller: bloc.fnameController,
-                          onChanged: (value) {
-                            bloc.add(RegisterTextFieldChangedEvent());
-                          },
-                          decoration: InputDecoration(
-                            constraints: BoxConstraints(
-                              maxHeight: 55,
-                            ),
-                            hintText: 'Enter Your First name',
-                            hintStyle: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Color.fromRGBO(102, 112, 133, 1),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(208, 213, 221, 1))),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(208, 213, 221, 1))),
-                          ),
-                        ),
-                      ),
-                      (state is RegisterFNameErrorState)
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25.0),
-                              child: RegularText(state.message, 15, kRed600),
-                            )
-                          : SizedBox.shrink(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'Last Name*',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: Color.fromRGBO(2, 64, 84, 1)),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(0, 1),
-                                blurRadius: 2,
-                                color: Color.fromRGBO(16, 24, 40, 0.05),
-                                spreadRadius: 1,
-                              )
-                            ]),
-                        child: TextFormField(
-                          controller: bloc.lnameController,
-                          onChanged: (value) {
-                            bloc.add(RegisterTextFieldChangedEvent());
-                          },
-                          decoration: InputDecoration(
-                            constraints: BoxConstraints(
-                              maxHeight: 55,
-                            ),
-                            hintText: 'Enter Your last name',
-                            hintStyle: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
-                              color: Color.fromRGBO(102, 112, 133, 1),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(208, 213, 221, 1))),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide(
-                                    color: Color.fromRGBO(208, 213, 221, 1))),
-                          ),
-                        ),
-                      ),
-                      (state is RegisterLNameErrorState)
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25.0),
-                              child: RegularText(state.message, 15, kRed600),
-                            )
-                          : SizedBox.shrink(),
-                      SizedBox(
-                        height: 20,
-                      ),
                       Text(
                         'Email*',
                         style: TextStyle(
@@ -249,42 +128,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 20,
                       ),
                       Text(
-                        'DOB*',
+                        'Password*',
                         style: TextStyle(
                             fontWeight: FontWeight.w400,
                             fontSize: 16,
                             color: Color.fromRGBO(2, 64, 84, 1)),
                       ),
                       const Gap(10),
-                      Container(
-                        height: 52,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(0, 1),
-                                blurRadius: 2,
-                                color: Color.fromRGBO(16, 24, 40, 0.05),
-                                spreadRadius: 1,
-                              )
-                            ]),
-                        child: DateFormatField(
-                          type: DateFormatType.type4,
-                          controller: bloc.dobController,
-                          onComplete: (date) {
-                            if (date != null) {
-                              bloc.dobController.text =
-                                  date.formatDateDayMonthYear.toString();
-                              bloc.add(RegisterTextFieldChangedEvent());
-                            }
-                          },
-                        ),
-                      ),
                     ],
                   ),
                 ),
-                (state is RegisterDobErrorState)
+                Container(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0, 1),
+                          blurRadius: 2,
+                          color: Color.fromRGBO(16, 24, 40, 0.05),
+                          spreadRadius: 1,
+                        )
+                      ]),
+                  child: TextFormField(
+                    controller: bloc.passwordController,
+                    onChanged: (value) {
+                      bloc.add(RegisterTextFieldChangedEvent());
+                    },
+                    decoration: InputDecoration(
+                      constraints: BoxConstraints(
+                        maxHeight: 55,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(208, 213, 221, 1))),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color: Color.fromRGBO(208, 213, 221, 1))),
+                    ),
+                  ),
+                ),
+                (state is RegisterPasswordErrorState)
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25.0),
                         child: RegularText(state.message, 15, kRed600),
@@ -297,17 +184,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ? Center(child: CircularProgressIndicator())
                       : InkWell(
                           onTap: () {
-                            // if (state is RegisterFormValidState) {
-
                             context.read<RegisterBloc>().add(
                                 RegisterStartedEvent(RegisterModel(
-                                    bloc.fnameController.text.trim(),
-                                    bloc.lnameController.text.trim(),
                                     bloc.emailController.text.trim(),
-                                    bloc.dobController.text)));
-                            // } else {
-                            //   showErrorMessage('Please fill up the form completely.');
-                            // }
+                                    bloc.passwordController.text)));
                           },
                           child: Container(
                             height: 55,

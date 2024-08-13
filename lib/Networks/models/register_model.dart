@@ -1,55 +1,41 @@
  
 
 import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
 class RegisterModel extends Equatable {
-  
-  final String firstName;
-  final String lastName;
+   
   final String email;
-  final String dob;
+  final String password;
 
-  const RegisterModel(
-    this.firstName,
-    this.lastName,
+  const RegisterModel( 
     this.email,
-    this.dob,
-    // this.refer,
+    this.password, 
   );
   @override
-  List<Object?> get props => [firstName,lastName,email, dob];
+  List<Object?> get props => [ email, password];
 
-  RegisterModel copyWith({
-    String? firstName,
-    String? lastName,
+  RegisterModel copyWith({ 
     String? email,
-    String? dob,  
+    String? password,  
   }) {
-    return RegisterModel(
-      firstName ?? this.firstName,
-      lastName ?? this.lastName,
+    return RegisterModel( 
       email ?? this.email,
-      dob ?? this.dob, 
+      password ?? this.password, 
     );
   }
 
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      "first_name":firstName,
-      "last_name": lastName,
+    return <String, dynamic>{ 
       "email": email.toLowerCase(),
-      "dob": dob,  
+      "password": password,  
     };
   }
 
   factory RegisterModel.fromMap(Map<String, dynamic> map) {
-    return RegisterModel(
-      map['first_name'] as String,
-      map['last_name'] as String,
+    return RegisterModel( 
       map['email'] as String,
-      map['dob'] as String, 
+      map['password'] as String, 
       
     );
   }

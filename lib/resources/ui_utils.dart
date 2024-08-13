@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'constants.dart';
 
 void showSnackBarMessage(BuildContext context, Widget widget,

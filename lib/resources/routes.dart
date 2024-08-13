@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:new_project/screens/google_map_screen.dart';
 import 'package:new_project/screens/home_screen.dart';
 import 'package:new_project/screens/login_screen.dart';
 import 'package:new_project/screens/signup_screen.dart';
@@ -55,10 +54,7 @@ mixin GoRoutes {
       path: Routes.landing,
       builder: (context, state) => const HomeScreen(),
     ),
-    GoRoute(
-      path: Routes.map,
-      builder: (context, state) => const GoogleMapScreen(),
-    ),
+ 
   ];
 
 //router config

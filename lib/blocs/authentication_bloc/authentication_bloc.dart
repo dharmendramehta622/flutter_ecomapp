@@ -1,8 +1,4 @@
- 
-
 import 'package:bloc/bloc.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:new_project/Networks/StorageServices.dart';
 import 'package:new_project/Networks/models/session_info.dart';
 import 'package:new_project/Networks/services/auth_service.dart';
 import 'package:new_project/blocs/authentication_bloc/authentication_event.dart';
@@ -14,25 +10,14 @@ class AuthenticationBloc
   final AuthService _authService = AuthService();
   late String errorMessage;
   dynamic profileId = 0;
- 
+
   AuthenticationBloc() : super(AuthenticationState()) {
+
     on<AuthenticationStatusChanged>((event, emit) async {
-      // add(AuthenticationLogoutRequested());
-      final accessToken = await LocalStorageService.instance
-          .get(LocalStorageServiceItems.userToken);
-      if (accessToken != null) {
-        bool isTokenExpired = JwtDecoder.isExpired(accessToken);
-        if (isTokenExpired) {
-          await LocalStorageService.instance
-              .delete(LocalStorageServiceItems.userToken);
-          add(AuthenticationUnknownSessionEvent());
-        } else {
-          // await _authService.refreshToken();
-          final id = await _authService.getProfileId();
-          profileId = id;
-          add(AuthenticationClientSessionEvent(
-              SessionInfo(token: accessToken, id: id)));
-        }
+      final loggedIn = await _authService.checkLoggedIn();
+      if (loggedIn) {
+        add(const AuthenticationClientSessionEvent(
+            SessionInfo(token: 'access_token', id: '123')));
       } else {
         add(AuthenticationUnknownSessionEvent());
       }
