@@ -50,6 +50,8 @@ class AuthService {
   Future<ApiResponse> registerWithEmailPassword(
       {required RegisterModel model}) async {
     try {
+      //! this is just a simulation. In real world scenario the password
+      //! is hashed using algorithms such as SHA256, MD5, etc. before storing it into database.
       await LocalStorageService.instance
           .set(key: LocalStorageServiceItems.email, value: model.email);
       await LocalStorageService.instance
