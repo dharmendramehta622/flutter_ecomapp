@@ -104,3 +104,10 @@ fvm flutter build apk --no-tree-shake-icons
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
  
+
+ ## USAGE INSTRUCTIONS
+
+ - Please signup before you login as your login details needs to be stored to match it during login process.
+ - Products are fetched from fakestore APIs which are dummy data.
+ - Favourite functionality is just a simulation of the flow. In real world scenario data comes from backend.
+ 

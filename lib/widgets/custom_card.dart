@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:new_project/Networks/models/product_model.dart';
 import 'package:new_project/resources/constants.dart';
 import 'package:new_project/resources/routes.dart';
+import 'package:new_project/resources/ui_utils.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard(this.e, {super.key});
@@ -54,10 +55,18 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             //add to favourite
-            const Positioned(
+            Positioned(
               right: 8,
               top: 10,
-              child: Icon(Icons.favorite, color: kRed600),
+              child: GestureDetector(
+                onTap: () {
+                  // context
+                  //     .read<FavouriteBloc>()
+                  //     .add(AddToFavourite(item: e.toMap()));
+                  showSuccessMessage('Added to favourite successfully.');
+                },
+                child: const Icon(Icons.favorite, color: kRed600),
+              ),
             ),
             Positioned(
               left: 0,

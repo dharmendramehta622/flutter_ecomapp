@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:new_project/Networks/models/product_model.dart';
+import 'package:new_project/screens/favourite_screen.dart';
 import 'package:new_project/screens/home_screen.dart';
 import 'package:new_project/screens/login_screen.dart';
 import 'package:new_project/screens/product_detail_screen.dart';
@@ -12,6 +13,7 @@ class Routes {
   static String landing = '/landing';
   static String detail = '/detail';
   static String register = '/register';
+  static String favourites = '/favourites';
   static String login = '/login';
   static String splash = '/';
 }
@@ -56,6 +58,10 @@ mixin GoRoutes {
     GoRoute(
       path: Routes.landing,
       builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: Routes.favourites,
+      builder: (context, state) => const FavouriteScreen(),
     ),
     GoRoute(
       path: Routes.detail,

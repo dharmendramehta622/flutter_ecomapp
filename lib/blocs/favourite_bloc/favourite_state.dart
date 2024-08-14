@@ -1,26 +1,24 @@
-part of 'product_bloc.dart';
+part of 'favourite_bloc.dart';
 
+enum ListStatus { initial,loading, success, failure }
 
-
-enum PostStatus { initial,loading, success, failure }
-
-final class ProductState extends Equatable {
-  const ProductState({
-    this.status = PostStatus.initial,
+final class FavouriteState extends Equatable {
+  const FavouriteState({
+    this.status = ListStatus.initial,
     this.products = const <ProductModel>[],
     this.hasReachedMax = false,
   });
 
-  final PostStatus status;
+  final ListStatus status;
   final List<ProductModel> products;
   final bool hasReachedMax;
 
-  ProductState copyWith({
-    PostStatus? status,
+  FavouriteState copyWith({
+    ListStatus? status,
     List<ProductModel>? products,
     bool? hasReachedMax,
   }) {
-    return ProductState(
+    return FavouriteState(
       status: status ?? this.status,
       products: products ?? this.products,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
@@ -29,7 +27,7 @@ final class ProductState extends Equatable {
 
   @override
   String toString() {
-    return '''ProductState { status: $status, hasReachedMax: $hasReachedMax, products: ${products.length} }''';
+    return '''FavouriteState { status: $status, hasReachedMax: $hasReachedMax, products: ${products.length} }''';
   }
 
   @override

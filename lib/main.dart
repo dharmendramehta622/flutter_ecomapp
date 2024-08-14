@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:new_project/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:new_project/blocs/favourite_bloc/favourite_bloc.dart';
 import 'package:new_project/blocs/product_bloc/product_bloc.dart';
 import 'package:new_project/blocs/register_bloc/register_bloc.dart';
 
@@ -27,6 +28,9 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => ProductBloc()..add(ProductFetched()),
+        ),
+        BlocProvider(
+          create: (context) => FavouriteBloc()..add(LoadFavourite()),
         ),
         BlocProvider(
           create: (context) =>

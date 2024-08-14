@@ -8,7 +8,8 @@ enum LocalStorageServiceItems {
   password,
   refreshToken,
   logo,
-  currentLocation
+  currentLocation,
+  favouriteItems,
 }
 
 extension LocalStorageServiceItemsConfig on LocalStorageServiceItems {
@@ -26,6 +27,8 @@ extension LocalStorageServiceItemsConfig on LocalStorageServiceItems {
         return 'user-id';
       case LocalStorageServiceItems.logo:
         return 'logo';
+      case LocalStorageServiceItems.favouriteItems:
+        return 'favourite-items';
       case LocalStorageServiceItems.currentLocation:
         return 'current-location';
     }

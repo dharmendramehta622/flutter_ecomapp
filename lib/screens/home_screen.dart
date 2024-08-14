@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:new_project/blocs/product_bloc/product_bloc.dart';
 import 'package:new_project/resources/constants.dart';
+import 'package:new_project/resources/routes.dart';
 import 'package:new_project/widgets/custom_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -31,9 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bool isBottom = _scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent;
       if (isBottom) {
-        context
-            .read<ProductBloc>()
-            .add(ProductFetched());  
+        context.read<ProductBloc>().add(ProductFetched());
       }
     }
   }
@@ -49,10 +49,15 @@ class _HomeScreenState extends State<HomeScreen> {
           appBar: AppBar(
             backgroundColor: kPrimary600,
             title: RegularText('Ecommerce ', 16, kWhite),
-            actions: const [
-              Padding(
-                padding: EdgeInsets.all(4),
-                child: Icon(Icons.favorite, color: kWhite),
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  context.go(Routes.favourites);
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Icon(Icons.favorite, color: kWhite),
+                ),
               ),
             ],
           ),
